@@ -43,6 +43,12 @@ class App extends Component {
   }
 
   getPotentialBuyers() {
+    axios.get(`${baseURL}/buyers`).then( (results) => {
+      this.setState({
+        buyersToDisplay: results.data
+      })
+      toast.error("Here are the buyers!")
+    })
     // axios (GET)
     // setState with response -> buyersToDisplay
   }
@@ -60,6 +66,12 @@ class App extends Component {
 
   filterByMake() {
     let make = this.selectedMake.value;
+
+    axios.get(`${baseURL}/vehicles`).then( response => {
+      this.setState({
+        vehiclesToDisplay: response.data.make
+      })
+    })
 
     // axios (GET)
     // setState with response -> vehiclesToDisplay
@@ -112,12 +124,20 @@ class App extends Component {
       phone: this.phone.value,
       address: this.address.value
     };
-
-    //axios (POST)
-    // setState with response -> buyersToDisplay
+    axios.post(`${baseURL}/buyers`, newBuyer).then( results => {
+      this.setState({
+        buyersToDisplay: results.data.buyers
+      })
+    })
+    
   }
 
   deleteBuyer(id) {
+    axios.delete(`${baseURL}/buyers/${id}`).then( response => {
+      this.setState({
+        buyersToDisplay: response.data.buyers
+      })
+    })
     // axios (DELETE)
     //setState with response -> buyersToDisplay
   }
